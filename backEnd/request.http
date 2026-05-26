@@ -1,0 +1,44 @@
+GET http://localhost:3000/usuaris
+
+###
+
+GET http://localhost:3000/productes
+
+###
+
+POST http://localhost:3000/crearProducte HTTP/1.1
+Content-Type: application/json
+
+{
+    "component": "inputComponent.value",
+    "categoria": "inputCategoria.value",
+    "estat": "inputEstat.value",
+    "usuari": "inputUsuario.value",
+    "descripcio": "inputDescripcio.value",
+    "imatge": "inputImatge.value"
+}
+
+###
+
+PUT http://localhost:3000/productes/1
+Content-Type: application/json
+
+{
+    "component": "Nuevo componente",
+    "categoria": "Nova categoria",
+    "estat": "Nou estat",
+    "descripcio": "Nova descripció",
+    "imatge": "nova-imagen.jpeg"
+}
+
+###
+
+DELETE http://localhost:3000/productes/2
+
+
+###
+
+
+
+
+

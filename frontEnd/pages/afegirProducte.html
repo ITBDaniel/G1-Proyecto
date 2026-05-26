@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/crearProducte.js" type="module" defer></script>
+    <title>Afegir producte</title>
+</head>
+<body>
+    <main>
+        <h2 id="authTitle">Defineix el producte a afegir</h2>
+        <form action="" method="post" id="authForm">    
+            <label for="text" id="componentLabel">Component: </label>
+            <input type="text" id="component" required>
+            <label for="text" id="categoriaLabel">Categoria:</label>
+            <input type="text" id="categoria" required>
+            <label for="text" id="estatLabel">Estat:</label>
+            <input type="text" id="estat" required>
+            <label for="text" id="descripcioLabel">Descripció:</label>
+            <input type="text" id="descripcio" required>
+            <label for="text" id="imatgeLabel">Imatge:</label>
+            <input type="file" id="imatge" required>
+            <button type="submit" id="añadirBtn">Añadir</button>
+        </form>
+        <section id="errorCrearProducte"></section>
+    </main>
+</body>
+</html>

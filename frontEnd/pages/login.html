@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/auth.js" type="module" defer></script>
+    <title>Login</title>
+</head>
+<body>
+    <main>
+        <h2 id="authTitle">Inicia sesión</h2>
+        <form action="" method="post" id="authForm">    
+            <label for="text" id="loginName">Nombre de usuario o e-mail</label>
+            <input type="text" id="userInput" required>
+            <label for="text" id="registroEmail">E-mail</label>
+            <input type="email" id="emailInput" required>
+            <label for="text">Contraseña</label>
+            <input type="password" id="passwdInput" required>
+            <label for="text" id="registroPasswd">Confirmar contraseña</label>
+            <input type="password" id="passwdConfirmationInput" required>
+            <p id="passwdErrorMsg" class="errorMsg">Error! Las contraseñas no coinciden</p>
+            <button type="submit" id="submitBtn">Continuar</button>
+            <p id="loginErrorMsg" class="errorMsg">Error! Usuario o contraseña incorrectos </p>
+        </form>
+        <section id="toggleAuthText">
+        <p id="footerText">¿Aun no tienes una cuenta?</p> <a href="#" id="toggleAuth">Regístrate!</a>
+        </section>
+    </main>
+</body>
+</html>
