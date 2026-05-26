@@ -1,11 +1,14 @@
+import { eliminarProductes, modificarProductes } from "./modificarProducte.js";
+
 // Obtiene el id del producto de la query string (?id=...)
 function getProductIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');
 }
 
+const id = getProductIdFromUrl();
+
 async function mostrarProductoSeleccionado() {
-    const id = getProductIdFromUrl();
     const contenedor = document.getElementById('producto-detalle');
     if (!id) {
         contenedor.innerHTML = '<p>No se ha seleccionado ningún producto.</p>';
@@ -30,6 +33,22 @@ async function mostrarProductoSeleccionado() {
             <p><b>Usuario:</b> ${producto.usuari}</p>
             <img src="../img/${producto.imatge}" alt="Imatge del producte" style="max-width:300px;">
         `;
+        const btns = document.createElement('article');
+        btns.innerHTML = `
+            <button id="modificarBtn">Modificar</button>
+            <button id="eliminarBtn">Eliminar</button>
+        `;
+        contenedor.appendChild(btns);
+        const modificarBtn = document.getElementById('modificarBtn');
+        const eliminarBtn = document.getElementById('eliminarBtn');
+        modificarBtn.addEventListener("click", () => {
+            window.location.href = `modificarProducte.html?id=${id}`;
+            //modificarProductes(id);
+        });
+
+        eliminarBtn.addEventListener("click", () => {
+            eliminarProductes(id);
+        });
     } catch (error) {
         contenedor.innerHTML = '<p>Error de red al cargar el producto.</p>';
     }

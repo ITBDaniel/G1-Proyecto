@@ -1,5 +1,3 @@
-import {mostrarProductes} from "./productes";
-
 const componentLabel = document.getElementById("componentLabel");
 const inputComponent = document.getElementById("component");
 const categoriaLabel = document.getElementById("categoriaLabel");
@@ -14,15 +12,13 @@ const authForm = document.getElementById("authForm");
 
 const eliminarProducte = document.getElementById('eliminarProducte');
 
-mostrarProductes();
+// Obtiene el id del producto de la query string (?id=...)
+function getProductIdFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+}
 
-eliminarProducte.addEventListener("click", e => {
-    // Aquí deberías pasar el id del producto a eliminar
-    const id = document.getElementById('idProducte').value;
-    eliminarProductes(id);
-});
-
-async function eliminarProductes(id) {
+export async function eliminarProductes(id) {
     if (id != null && id != '') {
         try {
             const response = await fetch('http://localhost:3000/productes/' + id, {
@@ -48,7 +44,7 @@ async function eliminarProductes(id) {
     }
 }
 
-async function modificarProductes(id) {
+export async function modificarProductes(id) {
     if (id != null && id != '') {
         // Recoger los valores del formulario
         const datos = {
@@ -82,4 +78,11 @@ async function modificarProductes(id) {
         const sectionErrors = document.getElementById('errorModificarProducte');
         sectionErrors.appendChild(errorMsg);
     }
+}
+if(authForm) {
+authForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const id = getProductIdFromUrl();
+    modificarProductes(id);
+})
 }

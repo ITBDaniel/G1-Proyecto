@@ -96,9 +96,18 @@ async function checkLogin(username, password) {
     }
 }
 
-function createUser(username, email, password) {
-
+async function createUser(username, email, password) {
+    const response = await fetch('http://localhost:3000/usuaris', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
+    });
+    if (response.ok) {
+        console.log("Usuari creat correctament");
+        return true;
+    } else {
+        const data = await response.json();
+        console.log("Error al crear usuari: " + (data.error || 'desconegut'));
+        return false;
+    }
 }
-
-
-
