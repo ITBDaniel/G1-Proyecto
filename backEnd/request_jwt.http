@@ -1,0 +1,103 @@
+### Ejemplos de prueba de autenticación JWT y revisión de productos
+
+## 1. Login administrador (usuario creado automáticamente)
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "admin@loopware.com",
+  "contrasenya": "Admin123!"
+}
+
+### 2. Registrar nuevo usuario
+POST http://localhost:3000/registre
+Content-Type: application/json
+
+{
+  "nom": "Juan Pérez",
+  "email": "juan@example.com",
+  "contrasenya": "password123"
+}
+
+### 3. Login con usuario registrado
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "juan@example.com",
+  "contrasenya": "password123"
+}
+
+### 4. Login con credenciales incorrectas (debe fallar)
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "juan@example.com",
+  "contrasenya": "wrongpassword"
+}
+
+### 5. Obtener lista de usuarios (admin)
+GET http://localhost:3000/usuaris
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 6. Obtener productos públicos aprobados
+GET http://localhost:3000/productes
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 7. Obtener producto específico
+GET http://localhost:3000/productes/1
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 8. Crear nuevo producto (usuario autenticado)
+POST http://localhost:3000/crearProducte
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "component": "Procesador Intel i7",
+  "categoria": "Hardware",
+  "descripcio": "Procesador Intel Core i7 13700K",
+  "imatge": "https://example.com/procesador.jpg",
+  "usuari": "juan@example.com"
+}
+
+### 9. Modificar producto (propietario o admin)
+PUT http://localhost:3000/productes/1
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "component": "Procesador Intel i7 actualizado",
+  "categoria": "Hardware",
+  "descripcio": "Procesador actualizado",
+  "imatge": "https://example.com/procesador-nuevo.jpg"
+}
+
+### 10. Eliminar producto (propietario o admin)
+DELETE http://localhost:3000/productes/1
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 11. Ver productos pendientes de revisión (admin)
+GET http://localhost:3000/productes/revisio
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 12. Ver todos los productos como admin
+GET http://localhost:3000/productes/admin
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 13. Acceso sin token (debe fallar con 401)
+GET http://localhost:3000/productes
+
+### 14. Acceso con token inválido (debe fallar con 401)
+GET http://localhost:3000/productes
+Authorization: Bearer invalidtoken123
+
+### PASOS PARA PROBAR:
+1. Inicia el backend.
+2. Usa la petición 1 para entrar como administrador o la petición 3 para un usuario normal.
+3. Copia el token devuelto y pégalo en las peticiones con Authorization.
+4. Crea un producto con la petición 8.
+5. Abre la petición 11 con el token admin para revisar los anuncios pendientes.
+6. Aprueba o rechaza los productos usando la web o el endpoint de modificación.
+7. Comprueba que sólo los productos aprobados aparecen en la lista pública con la petición 6.

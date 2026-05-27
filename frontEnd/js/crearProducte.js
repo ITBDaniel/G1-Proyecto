@@ -1,65 +1,72 @@
-import { gridProductos , afegirProducte} from "./productes";
+import { fetchAutenticado, verificarAutenticacion, getUsuario } from './utils.js';
 
-const componentLabel = document.getElementById("componentLabel");
-const inputComponent = document.getElementById("component");
-const categoriaLabel = document.getElementById("categoriaLabel");
-const inputCategoria = document.getElementById("categoria");
-const estatLabel = document.getElementById("estatLabel");
-const inputEstat = document.getElementById("estat");
-const descripcioLabel = document.getElementById("descripcioLabel");
-const inputDescripcio = document.getElementById("descripcio");
-const imatgeLabel = document.getElementById("imatgeLabel");
-const inputImatge = document.getElementById("imatge");
-const authForm = document.getElementById("authForm");
+verificarAutenticacion();
 
-let producte = {};
+const inputComponent = document.getElementById('component');
+const inputCategoria = document.getElementById('categoria');
+const inputDescripcio = document.getElementById('descripcio');
+const inputImatge = document.getElementById('imatge');
+const inputPrecio = document.getElementById('precio');
+const authForm = document.getElementById('authForm');
+const sectionErrors = document.getElementById('errorCrearProducte');
 
-authForm.addEventListener("submit", e => { 
+authForm.addEventListener('submit', e => {
     e.preventDefault();
-    console.log(inputImatge.value)
-    producte = {
-        "component": inputComponent.value,
-        "categoria": inputCategoria.value,
-        "estat": inputEstat.value,
-        "descripcio": inputDescripcio.value,
-        "imatge": inputImatge.value,
-    }
-    crearProductes(producte);
-    afegirProducte(producte);
-})
 
+    const producte = {
+        component: inputComponent.value.trim(),
+        categoria: inputCategoria.value.trim(),
+        descripcio: inputDescripcio.value.trim(),
+        imatge: inputImatge.value.trim(),
+        precio: inputPrecio.value.toString().trim(),
+        // El estado 'Pendent' se asigna en el servidor
+    };
+
+    crearProductes(producte);
+});
 
 async function crearProductes(producte) {
-    if (producte != null && producte != '') {
-        try {
-            const response = await fetch('http://localhost:3000/crearProducte', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(producte)
-            });
+    if (!producte) return;
 
-            if (!response.ok) {
-                throw new Error(`Error en la petció: ${response.status} ${response.statusText}`);
-            }
+    // Limpiar errores previos
+    sectionErrors.innerHTML = '';
 
-            const data = await response.json();
-            alert('¡Producto creado con éxito! Volviendo a la lista...');
-
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-
-            return data;
-        } catch (error) {
-            console.log(error)
+    try {
+        const usuario = getUsuario();
+        if (!usuario || !usuario.nom) {
+            throw new Error('Error al obtener datos del usuario');
         }
-    } else {
-        const errorMsg = document.createElement('p');
-        errorMsg.classList.add('errorMsg');
-        errorMsg.textContent = 'Error al crear el producto';
-        const sectionErrors = document.getElementById('errorCrearProducte');
-        sectionErrors.appendChild(errorMsg);
+
+        producte.usuari = usuario.nom;
+
+        const response = await fetchAutenticado('/crearProducte', {
+            method: 'POST',
+            body: JSON.stringify(producte)
+        });
+
+        if (!response) return;
+
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || 'Error desconocido al crear el producto');
+        }
+
+        // Mostrar mensaje de éxito
+        sectionErrors.innerHTML = `<p style="color: green; font-weight: bold;">✓ ¡Producto creado con éxito! El administrador revisará tu producto pronto.</p>`;
+        
+        // Limpiar formulario
+        authForm.reset();
+        
+        // Redirigir después de 2 segundos
+        setTimeout(() => {
+            window.location.href = '../index.html';
+        }, 2000);
+
+        return data;
+    } catch (error) {
+        console.error('Error al crear producto:', error);
+        if (sectionErrors) {
+            sectionErrors.innerHTML = `<p class="errorMsg" style="color: red;">✗ ${error.message}</p>`;
+        }
     }
 }

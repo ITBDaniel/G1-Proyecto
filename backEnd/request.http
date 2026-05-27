@@ -1,40 +1,59 @@
+### Obtener todos los usuarios (requiere token admin)
 GET http://localhost:3000/usuaris
+Authorization: Bearer {{TOKEN}}
 
 ###
 
+### Obtener productos aprobados
 GET http://localhost:3000/productes
+Authorization: Bearer {{TOKEN}}
 
 ###
 
-POST http://localhost:3000/crearProducte HTTP/1.1
+### Crear nuevo producto
+POST http://localhost:3000/crearProducte
 Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
 
 {
-    "component": "inputComponent.value",
-    "categoria": "inputCategoria.value",
-    "estat": "inputEstat.value",
-    "usuari": "inputUsuario.value",
-    "descripcio": "inputDescripcio.value",
-    "imatge": "inputImatge.value"
+  "component": "Procesador Intel i7",
+  "categoria": "Hardware",
+  "descripcio": "Procesador Intel Core i7 13700K en buen estado",
+  "imatge": "https://example.com/procesador.jpg",
+  "usuari": "juan@example.com"
 }
 
 ###
 
+### Modificar producto existente
 PUT http://localhost:3000/productes/1
 Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
 
 {
-    "component": "Nuevo componente",
-    "categoria": "Nova categoria",
-    "estat": "Nou estat",
-    "descripcio": "Nova descripció",
-    "imatge": "nova-imagen.jpeg"
+  "component": "Procesador Intel i7 actualizado",
+  "categoria": "Hardware",
+  "descripcio": "Procesador actualizado con cooler incluido",
+  "imatge": "https://example.com/procesador-nuevo.jpg"
 }
 
 ###
 
-DELETE http://localhost:3000/productes/2
+### Eliminar producto
+DELETE http://localhost:3000/productes/1
+Authorization: Bearer {{TOKEN}}
 
+###
+
+### Ver productos pendientes para revisión (admin)
+GET http://localhost:3000/productes/revisio
+Authorization: Bearer {{TOKEN}}
+
+###
+
+### Ver todos los productos como admin
+GET http://localhost:3000/productes/admin
+Authorization: Bearer {{TOKEN}}
 
 ###
 

@@ -14,7 +14,7 @@ const emailInput = document.getElementById('emailInput');
 const emailLabel = document.getElementById('registroEmail');
 const confirmInput = document.getElementById('passwdConfirmationInput');
 const confirmLabel = document.getElementById('registroPasswd');
-
+const nomInput = document.getElementById('userInput'); // También se usa para el nombre en registro
 
 let isLogin = true;
 renderLoginView();
@@ -37,12 +37,12 @@ function toggleVisibility(isLogin){
 
     emailInput.style.display = displayStyle;
     emailLabel.style.display = displayStyle;
-    emailInput.required = isLogin; // Solo obligatorio si se ve
+    emailInput.required = !isLogin; // Solo obligatorio en registro
 
     // 2. Gestionamos la Confirmación de Contraseña
     confirmInput.style.display = displayStyle;
     confirmLabel.style.display = displayStyle;
-    confirmInput.required = isLogin; // Solo obligatorio si se ve
+    confirmInput.required = !isLogin; // Solo obligatorio en registro
     
     // 3. El mensaje de error siempre se esconde al cambiar de modo
     passwdErrorMsg.style.display = "none";
@@ -54,6 +54,7 @@ function renderLoginView() {
     submitBtn.innerText = "Continuar";
     footerText.innerText = "¿Aún no tienes una cuenta?";
     toggleAuth.innerText = "¡Regístrate!";
+    document.getElementById('loginName').innerText = "Email";
     toggleVisibility(true);
 }
 
@@ -62,52 +63,89 @@ function renderRegisterView() {
     submitBtn.innerText = "Registrarse";
     footerText.innerText = "¿Ya tienes cuenta?";
     toggleAuth.innerText = "Inicia sesión";
+    document.getElementById('loginName').innerText = "Nombre completo";
     toggleVisibility(false);
 }
 
 submitBtn.addEventListener("click", async (e) =>{
+    e.preventDefault();
+    
     if(isLogin){
         let loginOption = await checkLogin(userInput.value, passwdInput.value);
         if (loginOption) {
             window.location.href = '../index.html'
         } else {
-            loginErrorMsg.style.display = displayStyle;
+            loginErrorMsg.style.display = "block";
         }
     }else {
-        let registerOption = createUser(userInput.value, emailInput.value, passwdInput.value);
+        // Verificar que las contraseñas coincidan
+        if (passwdInput.value !== confirmInput.value) {
+            passwdErrorMsg.style.display = "block";
+            return;
+        }
+        passwdErrorMsg.style.display = "none";
+        
+        let registerOption = await createUser(userInput.value, emailInput.value, passwdInput.value);
         if (registerOption) {
+            isLogin = true;
             renderLoginView();
+            userInput.value = '';
+            passwdInput.value = '';
+            emailInput.value = '';
+            confirmInput.value = '';
+        } else {
+            loginErrorMsg.style.display = "block";
         }
     }
 })
 
-async function checkLogin(username, password) {
-    const response = await fetch('http://localhost:3000/usuaris')
-    const data = await response.json()
+async function checkLogin(email, password) {
+    try {
+        const response = await fetch('/login', {
 
-    const usuariTrobat = data.find(u => u.username == username)
-    const usariCredentials = data.find(u => u.password == password)
-    if (usuariTrobat == undefined && usariCredentials == undefined) {
-        console.log("No s'ha trobat l'usuari")
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, contrasenya: password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            // Guardar token en localStorage
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('usuario', JSON.stringify(data.usuario));
+            console.log("Bienvenido " + data.usuario.nom);
+            return true;
+        } else {
+            console.log("Error al iniciar sesión: " + (data.error || 'desconocido'));
+            return false;
+        }
+    } catch (err) {
+        console.error("Error de conexión: " + err.message);
         return false;
-    } else {
-        console.log("Benvingut "+ username)
-        return true;
     }
 }
 
-async function createUser(username, email, password) {
-    const response = await fetch('http://localhost:3000/usuaris', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password })
-    });
-    if (response.ok) {
-        console.log("Usuari creat correctament");
-        return true;
-    } else {
+async function createUser(nom, email, password) {
+    try {
+        const response = await fetch('/registre', {
+
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nom, email, contrasenya: password })
+        });
+        
         const data = await response.json();
-        console.log("Error al crear usuari: " + (data.error || 'desconegut'));
+        
+        if (response.ok && data.success) {
+            console.log("Usuario creado correctamente");
+            return true;
+        } else {
+            console.log("Error al crear usuario: " + (data.error || 'desconocido'));
+            return false;
+        }
+    } catch (err) {
+        console.error("Error de conexión: " + err.message);
         return false;
     }
 }
