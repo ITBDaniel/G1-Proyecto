@@ -1022,3 +1022,131 @@ body.dark-mode .search-input {
     text-shadow: none !important;
     color: #ffffff !important; /* Mantiene el texto blanco original */
 }
+
+/* ====================================
+   FOOTER (LOOPWARE)
+   ==================================== */
+
+.loopware-footer {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color-light);
+    padding: var(--spacing-2xl) 0 var(--spacing-lg) 0;
+    margin-top: var(--spacing-2xl);
+    font-family: var(--font-family);
+}
+
+.footer-container {
+    width: min(1200px, 100% - 2rem);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-xl);
+    padding: 0 var(--spacing-lg);
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.footer-col h3 {
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.footer-logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.footer-tagline {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.sustainability-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    background: rgba(22, 163, 74, 0.1);
+    color: var(--success) !important; /* Fuerza el color verde incluso en dark mode */
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1px solid rgba(22, 163, 74, 0.2);
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: var(--spacing-sm);
+}
+
+.footer-col ul li a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: var(--transition-fast);
+}
+
+.footer-col ul li a:hover {
+    color: var(--primary);
+}
+
+.footer-bottom {
+    width: min(1200px, 100% - 2rem);
+    margin: var(--spacing-xl) auto 0 auto;
+    padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
+    border-top: 1px solid var(--border-color-light);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+}
+
+/* Ajustes Responsivos para el Footer */
+@media (max-width: 768px) {
+    .loopware-footer {
+        padding-top: var(--spacing-xl);
+    }
+    
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        text-align: center;
+    }
+
+    .sustainability-badge {
+        align-self: center;
+    }
+}
+
+.footer-col ul li a:hover {
+    color: var(--primary-light); /* Cambia al azul más brillante */
+    text-shadow: 0 0 10px rgba(147, 197, 253, 0.6), 
+                 0 0 20px rgba(37, 99, 235, 0.4); /* Capas de brillo azul */
+    padding-left: 5px; /* Un sutil desplazamiento hacia la derecha al posarse */
+}
+
+/* Aseguramos que el movimiento y el brillo se sientan fluidos */
+.footer-col ul li a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block; /* Necesario para que el padding-left funcione bien */
+    transition: var(--transition); /* Usa tu variable de transición suave de 0.3s */
+}
