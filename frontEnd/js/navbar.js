@@ -1,5 +1,20 @@
 import { logout, getUsuario } from './utils.js';
 
+const DARK_MODE_KEY = 'modoOscuro';
+
+function isDarkModeEnabled() {
+    return localStorage.getItem(DARK_MODE_KEY) === '1';
+}
+
+function updateDarkMode(enabled, button) {
+    document.body.classList.toggle('dark-mode', enabled);
+    localStorage.setItem(DARK_MODE_KEY, enabled ? '1' : '0');
+    if (button) {
+        button.textContent = enabled ? 'Modo claro' : 'Modo oscuro';
+        button.setAttribute('aria-pressed', String(enabled));
+    }
+}
+
 export function crearNavbar() {
     const usuario = getUsuario();
     const existingNav = document.querySelector('header nav') || document.querySelector('nav');
@@ -20,7 +35,6 @@ export function crearNavbar() {
         ${usuario?.admin ? `<a href="${basePath}pages/revisarProductos.html">Revisión</a>` : ''}
     `;
 
-
     const navRight = document.createElement('div');
     navRight.className = 'nav-right';
 
@@ -39,6 +53,21 @@ export function crearNavbar() {
         loginLink.textContent = 'Iniciar sesión';
         navRight.appendChild(loginLink);
     }
+
+    const darkModeToggle = document.createElement('button');
+    darkModeToggle.className = 'btn btn-toggle';
+    darkModeToggle.type = 'button';
+    const darkModeActive = isDarkModeEnabled();
+    darkModeToggle.textContent = darkModeActive ? 'Modo claro' : 'Modo oscuro';
+    darkModeToggle.setAttribute('aria-label', 'Cambiar modo oscuro');
+    darkModeToggle.setAttribute('aria-pressed', String(darkModeActive));
+    darkModeToggle.addEventListener('click', () => {
+        const enabled = !document.body.classList.contains('dark-mode');
+        updateDarkMode(enabled, darkModeToggle);
+    });
+
+    navRight.appendChild(darkModeToggle);
+    updateDarkMode(darkModeActive, darkModeToggle);
 
     nav.append(navLeft, navRight);
 

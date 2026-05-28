@@ -25,6 +25,7 @@
     --text-tertiary: #94a3b8;
     --border-color: #cbd5e1;
     --border-color-light: #e2e8f0;
+    --navbar-text: var(--bg-secondary);
     
     /* Espaciado */
     --spacing-xs: 0.25rem;
@@ -54,6 +55,32 @@
     /* Transiciones */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.15s ease-out;
+}
+
+body.dark-mode {
+    --primary: #60a5fa;
+    --primary-dark: #2563eb;
+    --primary-light: #93c5fd;
+    --secondary: #94a3b8;
+    --success: #22c55e;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --danger-dark: #ef4444;
+    --bg-primary: #0f172a;
+    --bg-secondary: #111827;
+    --bg-tertiary: #1e293b;
+    --bg-gradient-start: #0f172a;
+    --bg-gradient-end: #111827;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --border-color: #334155;
+    --border-color-light: #1f2937;
+    --navbar-text: var(--text-primary);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 34px rgba(0, 0, 0, 0.35);
+    --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.3);
 }
 
 /* Reset completo */
@@ -124,7 +151,7 @@ header a:hover {
     flex-wrap: wrap;
     gap: var(--spacing-md);
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: var(--bg-secondary);
+    color: var(--navbar-text);
     border-radius: var(--radius-xl);
     padding: var(--spacing-md) var(--spacing-lg);
     box-shadow: var(--shadow-md);
@@ -143,7 +170,7 @@ header a:hover {
 .nav-left a,
 .nav-right a,
 .nav-right span {
-    color: var(--bg-secondary);
+    color: var(--navbar-text);
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
@@ -194,6 +221,19 @@ input[type='submit'] {
     justify-content: center;
     gap: var(--spacing-sm);
     user-select: none;
+}
+
+.btn-toggle {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: none;
+}
+
+body.dark-mode .btn-toggle {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.18);
 }
 
 .btn-primary,
@@ -446,9 +486,16 @@ main form select {
     border-radius: var(--radius-md);
     border: 1.5px solid var(--border-color);
     background: var(--bg-secondary);
+    color: var(--text-primary);
     font-size: 1rem;
     font-family: var(--font-family);
     transition: var(--transition-fast);
+}
+
+main form input::placeholder,
+main form textarea::placeholder,
+main form select::placeholder {
+    color: var(--text-tertiary);
 }
 
 main form input:focus,
@@ -457,6 +504,7 @@ main form select:focus {
     outline: none;
     border-color: var(--primary);
     background: var(--bg-primary);
+    color: var(--text-primary);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
