@@ -269,6 +269,22 @@ app.get('/productes/:id', (req, res) => {
     }
 });
 
+// Obtener email del autor del producto (para contacto)
+app.get('/usuaris/:id/email', verificarToken, (req, res) => {
+    try {
+        const stmt = db.prepare('SELECT email FROM usuaris WHERE id = ?');
+        const data = stmt.get(req.params.id);
+
+        if (!data) {
+            return res.status(404).json({ success: false, error: 'Usuario no encontrado' });
+        }
+
+        return res.json({ success: true, email: data.email });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 app.post("/crearProducte", verificarToken, (req, res) => {
     const datosProducte = {
         component: req.body.component,

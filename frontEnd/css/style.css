@@ -145,127 +145,171 @@ header a:hover {
 }
 
 /* ====================================
-   NAVEGACIÓN
+   NAVEGACIÓN ENLACES 
    ==================================== */
 
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
-    transform: none;
     width: 100%;
     z-index: 1000;
-
-    /* Pequeño margen lateral para que el texto no vaya pegado a los bordes */
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-
-    /* Más alto y con más aire */
-    padding: 1.25rem 2rem;
-    min-height: 72px;
-
-    /* Evita que quede “aplastado” en pantallas grandes */
+    background: rgba(15, 23, 42, 0.92) !important; 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     box-sizing: border-box;
+}
 
-
-
+.navbar-container {
+    max-width: 1600px; /* Ampliamos un poco más para dar el máximo espacio en pantallas grandes */
+    margin: 0 auto;
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: var(--navbar-text);
-
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-md) var(--spacing-lg);
-
-    box-shadow: var(--shadow-md);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: center; 
+    flex-wrap: nowrap;   
+    padding: 0.75rem 1.5rem;
+    min-height: 65px;
+    box-sizing: border-box;
 }
 
-/* El navbar es fixed, así que damos margen para que no tape contenido.
-   Se ajusta a la altura real aproximada del navbar. */
 body {
-    padding-top: calc(72px + (var(--spacing-md) * 2));
+    padding-top: 85px !important;
 }
 
-
-/* Evita que el navbar se vea como una “caja” flotante */
-.navbar {
-    /* Mantenemos fixed para que se quede arriba, pero quitamos bordes/radios que lo delatan */
-    border: none;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
-    padding: 0;
+/* Contenedor izquierdo (Enlaces de navegación) */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; 
+    flex-wrap: nowrap;
 }
 
-/* Contenedor interno del navbar (para mantener alineación y colores) */
-.navbar::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    z-index: -1;
-    /* sin borde visible */
-    border-radius: 0;
-}
-
-/* Asegura que el pseudo-elemento se posicione bien */
-.navbar {
-    position: fixed;
-}
-
-
-
-.nav-left,
+/* Contenedor derecho (Perfil, Cerrar sesión, Modo claro) */
 .nav-right {
     display: flex;
-    gap: 1.5rem;
     align-items: center;
-    flex-wrap: wrap;
+    gap: 0.8rem;
+    flex-shrink: 0;
+    
+    /* ESTA ES LA MAGIA: Al añadir un margen izquierdo automático, 
+       separa por completo el menú de la izquierda ("Prácticas") 
+       del bloque de usuario, creando un hueco limpio en el medio.
+    */
+    margin-left: auto; 
+    padding-left: 2rem; /* Espacio mínimo garantizado */
 }
 
+/* Ajustes del Logo */
+.nav-left .brand {
+    margin-right: 1.2rem;
+    font-size: 1.3rem;
+    font-weight: 800;
+    white-space: nowrap;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Estilo de los enlaces */
 .nav-left a,
-.nav-right a,
-.nav-right span {
-    color: var(--navbar-text);
+.nav-right a {
+    color: #f8fafc;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.85rem;       
+    white-space: nowrap;     
     position: relative;
     transition: var(--transition-fast);
-
-    /* Margen interno para separar el texto del resto del menú */
-    padding: 0.35rem 0;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.2rem;
 }
 
-.nav-left a::after,
+/* MEDIDA DE SEGURIDAD PARA NOMBRES LARGOS:
+   Si el nombre del Admin es gigante, no romperá el diseño; 
+   mostrará puntos suspensivos (...) gracias al max-width y text-overflow.
+*/
+.nav-right span {
+    color: #94a3b8;          
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px; /* Límite de ancho seguro para el texto de bienvenida */
+    display: inline-block;
+    text-align: right;
+}
+
+/* Botones de la derecha */
+.nav-right .btn-primary,
+.nav-right .btn-logout,
+.nav-right .btn-toggle {
+    padding: 0.5rem 1.1rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    border-radius: 50px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Botón Cerrar Sesión */
+.nav-right .btn-logout {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #fca5a5 !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+.nav-right .btn-logout:hover {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+
+/* Línea decorativa inferior */
+.nav-left a:not(.brand)::after,
 .nav-right a::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: 0;
     left: 0;
     width: 0;
     height: 2px;
     background: var(--primary-light);
-    transition: width 0.3s ease;
+    transition: width 0.25s ease;
 }
 
-.nav-left a:hover::after,
-.nav-right a:hover::after {
+.nav-left a:not(.brand):hover::after,
+.nav-right a::after {
     width: 100%;
 }
 
 .nav-left a:hover,
-.nav-right a:hover,
-.nav-right button:hover {
-    opacity: 1;
+.nav-right a:hover {
     color: var(--primary-light);
+    opacity: 1;
+}
+
+/* ====================================
+   ESTADO ACTIVO (GLOW EFFECT)
+   ==================================== */
+.nav-left a.active,
+.nav-right a.active {
+    color: var(--primary-light) !important;
+    opacity: 1;
+    text-shadow: 0 0 12px rgba(147, 197, 253, 0.6);
+}
+
+.nav-left a.active::after,
+.nav-right a.active::after {
+    width: 100%;
+    background: var(--primary-light);
+    box-shadow: 0 0 8px var(--primary-light);
 }
 
 /* ====================================
@@ -301,6 +345,35 @@ body.dark-mode .btn-toggle {
     color: var(--text-primary);
     border-color: rgba(255, 255, 255, 0.18);
 }
+
+/* ====================================
+   AJUSTE ACCESIBILIDAD MODO OSCURO
+   ==================================== */
+
+/* Evita textos que queden en negro en modo oscuro (por estilos inline/externos) */
+body.dark-mode,
+body.dark-mode * {
+    color: var(--text-primary) !important;
+}
+
+
+/* Mantener colores específicos cuando ya están definidos con variables */
+body.dark-mode .btn-primary,
+body.dark-mode button.btn-primary,
+body.dark-mode input[type='submit'] {
+    color: white;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    color: var(--text-primary);
+}
+
+body.dark-mode .search-input {
+    color: var(--text-primary);
+}
+
 
 .btn-primary,
 button.btn-primary,
@@ -779,7 +852,8 @@ body.dark-mode .search-input {
         font-size: 1.5rem;
     }
 
-    .navbar {
+    /* CAMBIADO: De .navbar a .navbar-container */
+    .navbar-container {
         flex-direction: column;
         gap: var(--spacing-md);
     }
@@ -844,7 +918,8 @@ body.dark-mode .search-input {
         text-align: center;
     }
 
-    .navbar {
+    /* CAMBIADO: De .navbar a .navbar-container */
+    .navbar-container {
         flex-direction: column;
         padding: var(--spacing-md);
     }
@@ -917,4 +992,33 @@ body.dark-mode .search-input {
         font-size: 1rem;
     }
 }
+/* ====================================
+   AJUSTE BOTÓN INICIAR SESIÓN
+   ==================================== */
+.nav-right .btn-primary {
+    padding: 0.6rem 1.5rem !important; /* Más espacio arriba/abajo y a los lados */
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;    /* Evita que el texto se rompa en dos líneas */
+    border-radius: 50px !important;    /* Mantiene la forma de cápsula redondeada */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
 
+.nav-right .btn-primary:hover {
+    transform: scale(1.04) !important; /* Efecto sutil al pasar el cursor */
+}
+
+.nav-right .btn-primary::after,
+.nav-right .btn-primary.active::after {
+    display: none !important;
+    width: 0 !important;
+    content: none !important;
+}
+
+.nav-right .btn-primary.active {
+    text-shadow: none !important;
+    color: #ffffff !important; /* Mantiene el texto blanco original */
+}

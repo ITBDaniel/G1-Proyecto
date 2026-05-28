@@ -93,11 +93,3 @@ GET http://localhost:3000/productes
 GET http://localhost:3000/productes
 Authorization: Bearer invalidtoken123
 
-### PASOS PARA PROBAR:
-1. Inicia el backend.
-2. Usa la petición 1 para entrar como administrador o la petición 3 para un usuario normal.
-3. Copia el token devuelto y pégalo en las peticiones con Authorization.
-4. Crea un producto con la petición 8.
-5. Abre la petición 11 con el token admin para revisar los anuncios pendientes.
-6. Aprueba o rechaza los productos usando la web o el endpoint de modificación.
-7. Comprueba que sólo los productos aprobados aparecen en la lista pública con la petición 6.

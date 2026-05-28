@@ -1,4 +1,4 @@
-import { fetchAutenticado, getUsuario, isAutenticado, getValidImageSrc } from './utils.js';
+import { fetchAutenticado, getUsuario, isAutenticado, getValidImageSrc, getToken } from './utils.js';
 
 function getProductIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
@@ -61,6 +61,39 @@ async function mostrarProductoSeleccionado() {
         }
 
         const imageSrc = getValidImageSrc(producto.imatge);
+
+        let contactoHtml = '';
+        // En DB actual, puede venir `user_id` como null en algunos productos.
+        // Para no romper la UI, mostramos estado si no hay user_id.
+        if (!producto.user_id) {
+            contactoHtml = '<p><strong>Contacto:</strong> No disponible (autor desconocido)</p>';
+        } else {
+            try {
+                if (!getToken()) {
+                    contactoHtml = '<p><strong>Contacto:</strong> No disponible (sin sesión)</p>';
+                } else {
+                    const resEmail = await fetchAutenticado(`/usuaris/${producto.user_id}/email`);
+                    if (resEmail && resEmail.ok) {
+                        const dataEmail = await resEmail.json();
+                        if (dataEmail?.email) {
+                            const email = dataEmail.email;
+                            contactoHtml = `
+                                <p><strong>Contacto:</strong> ${email}</p>
+
+                            `;
+                        } else {
+                            contactoHtml = '<p><strong>Contacto:</strong> No disponible</p>';
+                        }
+                    } else {
+                        contactoHtml = '<p><strong>Contacto:</strong> No disponible</p>';
+                    }
+                }
+            } catch (e) {
+                console.warn('No se pudo obtener email de contacto', e);
+                contactoHtml = '<p><strong>Contacto:</strong> No disponible</p>';
+            }
+        }
+
         contenedor.innerHTML = `
             ${messageBox}
             <div class="card">
@@ -73,6 +106,7 @@ async function mostrarProductoSeleccionado() {
                     <p><strong>Usuario:</strong> ${producto.usuari}</p>
                     <p><strong>Estado:</strong> <span class="${badgeClass}">${getEstatLabel(producto.estat)}</span></p>
                     <p style="color: #666; font-size: 0.9em;"><strong>Creado:</strong> ${new Date(producto.created_at).toLocaleDateString('es-ES')}</p>
+                    ${contactoHtml}
                 </div>
             </div>
         `;
