@@ -1,0 +1,1 @@
+Iniciar proyecto con los siguientes comandos: "cd /backEnd" y "npm run dev".
