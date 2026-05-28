@@ -1,7 +1,7 @@
 
 const currentOrigin = window?.location?.origin;
 const API_URL = currentOrigin && currentOrigin !== 'null' ? currentOrigin : 'http://localhost:3000';
-console.log('[utils] API_URL=', API_URL);
+
 
 const IMAGE_PLACEHOLDER = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
     `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150"><rect width="100%" height="100%" fill="#f5f5f5"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#7a7a7a" font-size="18">Sin imagen</text></svg>`
@@ -52,7 +52,7 @@ export function isAdmin() {
 export async function fetchAutenticado(endpoint, opciones = {}) {
     const token = getToken();
 
-    console.log('[utils] token=', token);
+
     if (!token) {
         console.warn('No hay token disponible');
         window.location.href = '/pages/login.html';
@@ -72,11 +72,10 @@ export async function fetchAutenticado(endpoint, opciones = {}) {
             headers
         });
         
-        console.log('[utils] fetchAutenticado', `${API_URL}${endpoint}`, 'status=', response.status);
-        console.log('[utils] token-used=', getToken());
+
         if (response.status >= 400) {
             const txt = await response.text().catch(() => '');
-            console.log('[utils] error-body', txt);
+
         }
 
 

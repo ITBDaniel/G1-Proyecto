@@ -1,15 +1,24 @@
-import { fetchAutenticado, verificarAutenticacion, getUsuario, getValidImageSrc } from './utils.js';
+import { fetchAutenticado, getValidImageSrc } from './utils.js';
+
 import { initBusqueda } from './busquedaProductos.js';
 
+import { verificarAutenticacion, getUsuario } from './utils.js';
+
 verificarAutenticacion();
+
+
 
 const revisionList = document.getElementById('revision-list');
 const reviewEmpty = document.getElementById('review-empty');
 
 async function obtenerPendientes() {
 
+
+
     const usuario = getUsuario();
+
     if (!usuario?.admin) {
+
         window.location.href = '/index.html';
         return;
     }

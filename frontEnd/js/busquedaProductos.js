@@ -1,4 +1,4 @@
-import { gridProductos } from './productes.js';
+
 
 function normalizar(str) {
   return (str ?? '')
@@ -13,28 +13,24 @@ export function initBusqueda({ listEl, inputMountParent, placeholder = 'Buscarâ€
   if (!listEl) return;
 
   const parent = inputMountParent ?? listEl.parentElement;
+
   const wrapper = document.createElement('div');
   wrapper.className = 'search-wrapper';
 
   const input = document.createElement('input');
   input.type = 'search';
   input.className = 'search-input';
-  input.placeholder = placeholder;
-
-  const clearBtn = document.createElement('button');
-  clearBtn.type = 'button';
-  clearBtn.className = 'search-clear';
-  clearBtn.textContent = 'âœ•';
+  // Placeholder con lupa dentro del input
+  input.placeholder = `ðŸ”Ž ${placeholder}`;
 
   wrapper.appendChild(input);
-  wrapper.appendChild(clearBtn);
 
-  if (parent) {
-    parent.insertBefore(wrapper, listEl);
-  }
+  if (parent) parent.insertBefore(wrapper, listEl);
 
   function aplicarFiltro() {
     const q = normalizar(input.value);
+
+    // cards visibles/filtrables
     const cards = Array.from(listEl.children).filter(el => el.classList.contains('product-card'));
 
     let visibleCount = 0;
@@ -46,7 +42,7 @@ export function initBusqueda({ listEl, inputMountParent, placeholder = 'Buscarâ€
       if (visible) visibleCount++;
     }
 
-    // si no hay resultados, mostrar mensaje si existe .search-empty
+    // Mostrar/ocultar mensaje de resultados vacÃ­os
     const existing = parent?.querySelector('.search-empty');
     if (visibleCount === 0 && q.length > 0) {
       if (!existing) {
@@ -61,11 +57,6 @@ export function initBusqueda({ listEl, inputMountParent, placeholder = 'Buscarâ€
   }
 
   input.addEventListener('input', aplicarFiltro);
-  clearBtn.addEventListener('click', () => {
-    input.value = '';
-    aplicarFiltro();
-  });
-
   aplicarFiltro();
 }
 

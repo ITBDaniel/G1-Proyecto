@@ -91,6 +91,7 @@ body.dark-mode {
 }
 
 html {
+
     scroll-behavior: smooth;
 }
 
@@ -101,6 +102,9 @@ body {
     min-height: 100vh;
     line-height: 1.6;
 }
+
+
+
 
 /* ====================================
    LAYOUT PRINCIPAL
@@ -145,19 +149,78 @@ header a:hover {
    ==================================== */
 
 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100%;
+    z-index: 1000;
+
+    /* Pequeño margen lateral para que el texto no vaya pegado a los bordes */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    /* Más alto y con más aire */
+    padding: 1.25rem 2rem;
+    min-height: 72px;
+
+    /* Evita que quede “aplastado” en pantallas grandes */
+    box-sizing: border-box;
+
+
+
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: var(--spacing-md);
+
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: var(--navbar-text);
+
     border-radius: var(--radius-xl);
     padding: var(--spacing-md) var(--spacing-lg);
+
     box-shadow: var(--shadow-md);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* El navbar es fixed, así que damos margen para que no tape contenido.
+   Se ajusta a la altura real aproximada del navbar. */
+body {
+    padding-top: calc(72px + (var(--spacing-md) * 2));
+}
+
+
+/* Evita que el navbar se vea como una “caja” flotante */
+.navbar {
+    /* Mantenemos fixed para que se quede arriba, pero quitamos bordes/radios que lo delatan */
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    padding: 0;
+}
+
+/* Contenedor interno del navbar (para mantener alineación y colores) */
+.navbar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    z-index: -1;
+    /* sin borde visible */
+    border-radius: 0;
+}
+
+/* Asegura que el pseudo-elemento se posicione bien */
+.navbar {
+    position: fixed;
+}
+
+
 
 .nav-left,
 .nav-right {
@@ -176,6 +239,9 @@ header a:hover {
     font-size: 0.95rem;
     position: relative;
     transition: var(--transition-fast);
+
+    /* Margen interno para separar el texto del resto del menú */
+    padding: 0.35rem 0;
 }
 
 .nav-left a::after,
@@ -615,9 +681,11 @@ main form button {
     border-radius: var(--radius-md);
     border: 1.5px solid var(--border-color);
     background: var(--bg-secondary);
+    color: var(--text-primary);
     font-size: 0.95rem;
     transition: var(--transition-fast);
 }
+
 
 .search-input:focus {
     outline: none;
@@ -629,6 +697,11 @@ main form button {
 .search-input::placeholder {
     color: var(--text-tertiary);
 }
+
+body.dark-mode .search-input {
+    color: #ffffff;
+}
+
 
 .search-clear {
     width: 40px;

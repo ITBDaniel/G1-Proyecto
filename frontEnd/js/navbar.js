@@ -17,11 +17,13 @@ function updateDarkMode(enabled, button) {
 
 export function crearNavbar() {
     const usuario = getUsuario();
-    const existingNav = document.querySelector('header nav') || document.querySelector('nav');
+    const existingNav = document.querySelector('header#site-header nav#navbar') || document.querySelector('nav#navbar');
     const nav = existingNav || document.createElement('nav');
+
     nav.id = 'navbar';
     nav.className = 'navbar';
     nav.innerHTML = '';
+
 
     const basePath = window.location.pathname.includes('/pages/') ? '../' : '';
     const navLeft = document.createElement('div');
@@ -29,6 +31,9 @@ export function crearNavbar() {
     navLeft.innerHTML = `
         <a class="brand" href="${basePath}index.html">Loopware</a>
         <a href="${basePath}index.html">Inicio</a>
+        <a href="${basePath}pages/sostenibilitat-ods.html">Sostenibilidad</a>
+        <a href="${basePath}pages/sostenibilitat-repte.html">Problema y solución</a>
+        <a href="${basePath}pages/sostenibilitat-loopware.html">Cómo reutilizamos</a>
         ${usuario ? `<a href="${basePath}pages/afegirProducte.html">Añadir producto</a>` : ''}
         ${usuario ? `<a href="${basePath}pages/editarPerfil.html">Editar perfil</a>` : ''}
         ${usuario ? `<a href="${basePath}pages/misProductos.html">Mis productos</a>` : ''}
@@ -72,15 +77,15 @@ export function crearNavbar() {
     nav.append(navLeft, navRight);
 
     if (!existingNav) {
-        const header = document.querySelector('header') || document.body;
-        if (header.tagName.toLowerCase() === 'body') {
-            const wrapper = document.createElement('header');
-            wrapper.appendChild(nav);
+        let wrapper = document.querySelector('header#site-header');
+        if (!wrapper) {
+            wrapper = document.createElement('header');
+            wrapper.id = 'site-header';
             document.body.insertBefore(wrapper, document.body.firstChild);
-        } else {
-            header.appendChild(nav);
         }
+        wrapper.appendChild(nav);
     }
+
 
     return nav;
 }
